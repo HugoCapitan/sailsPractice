@@ -1,4 +1,4 @@
-angular.module('SignupModule').controller('SignupController', ['$scope', '$http', function($scope, $http){
+angular.module('SignupModule').controller('SignupController', ['$scope', '$http', 'toastr', function($scope, $http, $toastr){
 
   // Setup loading state
   $scope.signupForm = {
@@ -18,10 +18,14 @@ angular.module('SignupModule').controller('SignupController', ['$scope', '$http'
       window.location = '/user';
     })
     .catch(function onError(sailsResponse){
-      console.log(sailsResponse);
+      var emailAddressAlreadyInUse = sailsResponse.status == 409;
+      if (emailAddressAlreadyInUse) {
+        $toastr.error('That email address has already been taken, please try again.', 'Error');
+        return;
+      }
     })
     .finally(function eatherWay(){
-      $scope.signupForm.location = false;
+      $scope.signupForm.loading = false;
     });
   }
 }]);
