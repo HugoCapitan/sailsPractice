@@ -15,10 +15,13 @@ angular.module('SignupModule').controller('SignupController', ['$scope', '$http'
       password: $scope.signupForm.password
     })
     .then(function onSuccess(){
-      window.locaiton = '/user'
+      window.location = '/user';
     })
     .catch(function onError(sailsResponse){
       console.log(sailsResponse);
+    })
+    .finally(function eatherWay(){
+      $scope.signupForm.location = false;
     });
   }
 }]);
